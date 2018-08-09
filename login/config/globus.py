@@ -209,10 +209,12 @@ class GlobusOAuthenticator(OAuthenticator):
         """
 
         vc3_token = False
+
         if (vc3_token):
+
             internal_auth_client = self.globus_portal_client()
-            #refresh_authorizer = globus_sdk.RefreshTokenAuthorizer(self.getRefreshToken(), conf_client)
-            REFRESH_TOKEN = "AgzX2xzmxObyzdd6YVrlJdpkyqE5xNJExXEvVXKNa4PjPjwWmWTyUQVKkavKx5Gar7d9yDVb7elb5MG6pNr3XwrnWzWk4"
+
+            REFRESH_TOKEN = self.getRefreshToken("jezhou8") # TODO : figure out how to find which user's token to use
             refresh_authorizer = self.globus_authorizer(REFRESH_TOKEN, internal_auth_client)
             
             client = globus_sdk.AuthClient(authorizer=refresh_authorizer)
@@ -222,15 +224,16 @@ class GlobusOAuthenticator(OAuthenticator):
 
             username = self.getUsername(sub)
             
-            if self.isUserInProject(username, "vc3"):
+            if self.isUserInProject(username, "vc3"): # TODO : Change project to unix group
                 return username
             else: 
                 raise HTTPError(
                     403,
                     'This site is restricted to accounts that belong to VC3 project'
                 )
-                
+            
         else: 
+
             code = handler.get_argument("code")
             redirect_uri = self.get_callback_url(self)
 
