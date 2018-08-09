@@ -4,7 +4,7 @@ Description=Jupyter Notebook
 [Service]
 Type=simple
 PIDFile=/run/jupyterhub.pid
-ExecStart=/bin/bash -c '/usr/bin/jupyterhub --ip "$(curl -s https://api.ipify.org)" --port 8080 -f "/etc/.jupyterhub/jupyterhub_config.py"'
+ExecStart=/bin/bash -c '/usr/bin/jupyterhub --ip "$(curl -s https://api.ipify.org)" --port 8080 -f "/etc/.jupyterhub/jupyterhub_config.py" --ssl-cert /etc/.jupyterhub/jupyterhub.cert --ssl-key /etc/.jupyterhub/jupyterhub.key'
 User=root
 WorkingDirectory=/home/
 Restart=always
@@ -12,3 +12,7 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
+
+"$(curl -s https://api.ipify.org)"
+
+
